@@ -12,25 +12,31 @@ class Style_Detector_Model(tf.keras.Model):
         self.architecture = tf.keras.Sequential([
             tf.keras.layers.Conv2D(filters=16, kernel_size=3,strides=(2,2), padding="same", name="conv_layer1"),
             tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.Conv2D(filters=64, kernel_size=3,strides=(2,2),activation='leaky_relu', padding="same", kernel_regularizer=regularizers.l2(l=0.01)),
-            tf.keras.layers.MaxPooling2D((2,2)),
-            tf.keras.layers.Conv2D(filters=128, kernel_size=3,strides=(2,2),activation='leaky_relu', padding="same",
-            kernel_regularizer=regularizers.l2(l=0.01)),
-            tf.keras.layers.Conv2D(filters=256, kernel_size=3,strides=(2,2),activation='leaky_relu', padding="same",
-            kernel_regularizer=regularizers.l2(l=0.01)),
-            tf.keras.layers.Conv2D(filters=512, kernel_size=3,strides=(2,2),activation='leaky_relu', padding="same",
-            kernel_regularizer=regularizers.l2(l=0.01)),
-            tf.keras.layers.Conv2D(filters=1028, kernel_size=3,strides=(2,2),activation='leaky_relu', padding="same",
-            kernel_regularizer=regularizers.l2(l=0.01)),
-            tf.keras.layers.MaxPool2D(),
-            tf.keras.layers.Dropout(0.4),
-            tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.Flatten(),
-            tf.keras.layers.Dense(1000, activation='leaky_relu'),
-            tf.keras.layers.Dropout(0.3),
-            tf.keras.layers.Dense(100, activation='leaky_relu'),
-            tf.keras.layers.Dropout(0.2),
-            tf.keras.layers.Dense(num_classes, activation='softmax')
+            tf.keras.layers.Conv2D(filters=64, kernel_size=5, strides=1, activation="relu", padding="same", name="block1_conv1"),
+			tf.keras.layers.Dropout(rate=0.2),
+			tf.keras.layers.Conv2D(filters=64, kernel_size=5, strides=1, activation="relu", padding="same", name="block1_conv2"),
+			tf.keras.layers.MaxPool2D(pool_size=(3,3), padding="same"),
+			tf.keras.layers.Dropout(rate=0.2),
+			
+			tf.keras.layers.Conv2D(filters=128, kernel_size=5, strides=1, activation="relu", padding="same", name="block2_conv1"),
+			tf.keras.layers.Dropout(rate=0.2),
+			tf.keras.layers.Conv2D(filters=128, kernel_size=5, strides=1, activation="relu", padding="same", name="block2_conv2"),
+			tf.keras.layers.MaxPool2D(pool_size=(3,3), padding="same"),
+			tf.keras.layers.Dropout(rate=0.2),
+
+			tf.keras.layers.Conv2D(filters=256, kernel_size=5, strides=1, activation="relu", padding="same", name="block3_conv1"),
+			tf.keras.layers.Dropout(rate=0.2),
+			tf.keras.layers.Conv2D(filters=256, kernel_size=5, strides=1, activation="relu", padding="same", name="block3_conv2"),
+			tf.keras.layers.MaxPool2D(pool_size=(3,3), padding="same"),
+			tf.keras.layers.Dropout(rate=0.2),
+			
+			tf.keras.layers.GlobalAveragePooling2D(),
+			tf.keras.layers.Dense(128, activation="relu"),
+			tf.keras.layers.BatchNormalization(),
+			tf.keras.layers.Dropout(rate=0.5),
+			tf.keras.layers.Dense(128, activation="relu"),
+			tf.keras.layers.Dropout(rate=0.5),
+			tf.keras.layers.Dense(num_classes, activation="softmax")
         ])
     
     def call(self, x):

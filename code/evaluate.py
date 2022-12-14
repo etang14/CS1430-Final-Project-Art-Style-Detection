@@ -9,6 +9,7 @@ from model import Style_Detector_Model
 import tensorflow as tf
 import hyperparameters as hp
 import numpy as np
+import visualkeras
 
 def LIME_explainer(model, path):
     """
@@ -102,13 +103,17 @@ train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
         batch_size=hp.batch_size
     )
 
+# evualuate with model, load weights from checkpoint, and evaluate once more.
 loss, acc = model.evaluate(val_ds, verbose=2)
 print("New model, accuracy: {:5.2f}%".format(100 * acc))
 
-model.load_weights("checkpoints/14-12-22-145812")
+model.load_weights("checkpoints/14-12-22-161844")
 
 loss, acc = model.evaluate(val_ds, verbose=2)
 print("Restored model, accuracy: {:5.2f}%".format(100 * acc))
+
+# visualize the model architecture
+visualkeras.layered_view(model.get_layer("sequential"), to_file="model-arch.png").show()
 
 image_paths = [
     "data/images/abstract-expressionism/231511.jpg",
