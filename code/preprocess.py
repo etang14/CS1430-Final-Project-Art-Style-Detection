@@ -1,7 +1,6 @@
 import numpy as np
 import hyperparameters as hp
 import json
-import pickle
 from PIL import Image
 import os
 from os.path import isfile, join
