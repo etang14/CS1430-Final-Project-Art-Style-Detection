@@ -1,4 +1,3 @@
-# FinalProject_Template
+# Convolutional Neural Network Art Style Detection
 
-This repository contains templates for CSCI 1430 project deliverables of many kinds: proposals, progress checks, project reports, presentations, posters, etc.
-Each template may not be required for your final project, e.g., some semesters we might not perform presentations. We simply collect them all here for ease.
+This repository contains scripts and results for CNN Art-Style/Movement Detection in which we trained a CNN to classify artwork into various historically recognized art movements.
